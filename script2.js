@@ -1,24 +1,27 @@
 const container = document.querySelector(".content__column");
 let idArray = Array.from({ length: 671 }, (value, number) => number + 1);
 let id = 0;
-let arrayOfCharacters = [];
+const cardLimit = 10;
+let arrayOfCharacters;
 
-getArticle();
+loadCharacters();
 
-async function getArticle() {
+async function loadCharacters() {
   try {
     let response = await fetch(`https://rickandmortyapi.com/api/character/${idArray}`);
-    arrayOfCharacters = await response.json();
-    loadArticles(arrayOfCharacters);
+    let data = await response.json();
+    arrayOfCharacters = data;
+    getArticle(arrayOfCharacters);
   } catch (err) {
-    console.log(err.message);
+    console.error(err.message);
   }
 }
 
-function loadArticles(arrayOfCharacters) {
-  for (let i = 0; i < 10; i++) {
+function getArticle(arrayOfCharacters) {
+  for (let i = 0; i < cardLimit; i++) {
     id++;
-    addAtricletoDOM(id, arrayOfCharacters);
+    console.log(arrayOfCharacters);
+    addAtricletoDOM(id, arrayOfCharacters)
   }
 }
 
@@ -42,6 +45,6 @@ window.addEventListener('scroll', function () {
   const rootElement = document.documentElement;
   const { scrollTop, scrollHeight, clientHeight } = rootElement;
   if (scrollTop + clientHeight >= scrollHeight - 1) {
-    loadArticles(arrayOfCharacters);
+    getArticle(arrayOfCharacters);
   }
 })

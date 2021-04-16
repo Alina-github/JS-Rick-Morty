@@ -228,8 +228,6 @@ h4 {
   .item__info h2 {
     font-size: 16px;
   }
-  h2, p, h3, h4 {
-    margin: 0;
   }
   @media (max-width:680px) {
     .item__info {
