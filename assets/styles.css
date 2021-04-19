@@ -8,14 +8,13 @@ body {
   background-color: rgb(32, 35, 41);
 }
 
-*, *:after, *:before {
+*, *:after {
   box-sizing: border-box;
 }
 
 /* Container */
 
 .container {
-  width: 100%;
   max-width: 1200px;
   margin: 0 auto;
   text-align: center;
@@ -102,7 +101,6 @@ img {
 }
 
 .intro__title {
-  max-width: 880 px;
   margin: 0 auto;
   font-size: 44px;
   letter-spacing: 2px;
@@ -140,7 +138,7 @@ img {
   width: 80%;
   height: 100%;
   margin: 0 auto;
-  padding: 40px 0;
+  padding: 40px 0 100px;
 }
 
 .content__item {
@@ -153,11 +151,6 @@ img {
   overflow: auto;
   background: rgb(60, 62, 68);
 }
-
-/* .card:hover {
-cursor: pointer;
-opacity: 0.9;
-} */
 
 .item__image {
   width: 33.3%;
@@ -218,7 +211,6 @@ h4 {
 /*Media section*/
 
 @media (max-width:890px) {
-
   .intro__title {
     font-size: 50px;
   }
@@ -228,33 +220,81 @@ h4 {
   .item__info h2 {
     font-size: 16px;
   }
+}
+
+@media (max-width:680px) {
+  .item__info {
+    font-size: 0.5em;
   }
-  @media (max-width:680px) {
-    .item__info {
-      font-size: 0.5em;
-    }
-    .item__info h2 {
-      font-size: 14px;
-    }
-
-   }
-  @media (max-width: 660px) {
-
-    .content__item {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-    .item__info {
-      width: 67.7%;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      text-align: center;
-    }
-    .item__image {
-      border-radius: 5px;
-      margin-top: 10px;
-
-    }
+  .item__info h2 {
+    font-size: 14px;
   }
+}
+
+@media (max-width: 660px) {
+  .content__item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .item__info {
+    width: 67.7%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    text-align: center;
+  }
+  .item__image {
+    border-radius: 5px;
+    margin-top: 10px;
+  }
+}
+
+/*Loading animation*/
+
+.loading {
+  opacity: 0;
+  display: flex;
+  position: fixed;
+  bottom: 50px;
+  left: 50%;
+  transform: translateX(-50%);
+  transition: opacity .3s ease-in;
+}
+
+.loading.show {
+  opacity: 1;
+}
+
+.loading__wrapper {
+  height: 40px;
+  margin: 0 auto;
+  justify-content: center;
+  align-items: bottom;
+}
+
+.circle {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: #D5CFE1;
+  margin: 3px;
+  animation: jump 0.6s ease-in infinite;
+}
+
+@keyframes jump {
+  0% {
+    transform: translateY(0)
+  }
+  50% {
+    transform: translateY(-8px)
+  }
+}
+
+.circle:nth-of-type(2) {
+  animation-delay: 0.2s;
+}
+
+.circle:nth-of-type(3) {
+  animation-delay: 0.3s;
+}
