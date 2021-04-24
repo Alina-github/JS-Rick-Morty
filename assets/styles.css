@@ -2,7 +2,7 @@ body {
   margin: 0;
   font-family: 'Montserrat', sans-serif;
   font-size: 15px;
-  color: #333;
+  color: white;
   line-height: 1.6;
   min-height: 100vh;
   background-color: rgb(32, 35, 41);
@@ -150,6 +150,13 @@ img {
   border-radius: 8px;
   overflow: auto;
   background: rgb(60, 62, 68);
+  transition: 0.2s ease;
+}
+
+.content__item:hover {
+cursor: pointer;
+transform: scale(1.05);
+box-shadow: 5px 5px 15px rgba(0,0,0,0.6)
 }
 
 .item__image {
@@ -189,7 +196,7 @@ h2 {
 }
 
 h3 {
-  font-size: 1.5em;
+  font-size: 1.3em;
   color: rgb(245, 245, 245);
 }
 
@@ -201,10 +208,10 @@ p {
 }
 
 h4 {
-  font-size: 1em;
+  font-size: 1.5em;
   color: rgb(192, 192, 192);
   font-family: 'Roboto', sans-serif;
-  font-weight: 900;
+  font-weight: 400;
   margin: 0;
 }
 
@@ -215,7 +222,7 @@ h4 {
     font-size: 50px;
   }
   .item__info {
-    font-size: 0.65em;
+    font-size: 0.85em;
   }
   .item__info h2 {
     font-size: 16px;
@@ -224,7 +231,7 @@ h4 {
 
 @media (max-width:680px) {
   .item__info {
-    font-size: 0.5em;
+    font-size: 0.75em;
   }
   .item__info h2 {
     font-size: 14px;
@@ -297,4 +304,33 @@ h4 {
 
 .circle:nth-of-type(3) {
   animation-delay: 0.3s;
+}
+
+/*One card styles */
+
+.character__btn {
+  text-decoration: none;
+  color:white;
+  display: inline-block;
+  padding: 10px 40px;
+  background-color:rgb(41, 45, 53);
+  border: 2px solid white;
+  border-radius: 6px;
+  margin-top: 5px;
+  transition: all 0.5s ease;
+}
+
+.character__btn:hover {
+  background-color: white;
+  color: rgb(41, 45, 53);
+  box-shadow: 5px 5px 15px rgba(0,0,0,0.6);
+}
+
+.character {
+  max-width: 1200px;
+  display: flex;
+  justify-content: space-around;
+}
+.character__info {
+text-align: center;
 }

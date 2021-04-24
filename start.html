@@ -4,11 +4,13 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="assets/styles.css">
   <link
     href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;900&family=Roboto:wght@100;400;700&family=RocknRoll+One&display=swap"
     rel="stylesheet">
-  <link rel="shortcut icon" type="image/svg" href="D:\HTML, CSS\Rick and Morty\assets\logo.svg" />
+
+  <link rel="stylesheet" href="assets/styles.css">
+
+  <link rel="shortcut icon" type="image/svg" href="assets/logo.svg">
   <title>Rick and Morty</title>
 </head>
 
@@ -20,8 +22,9 @@
         <img src="assets\logo.svg">
       </div>
       <nav class="nav">
-        <a class="nav__link nav__link-active" href="#">Caracters</a>
-        <a class="nav__link" href="#">About</a>
+<!--        <a class="nav__link nav__link-active" href="" }>Characters</a>-->
+        <button class="nav__link" onclick="router.loadRoute('')">Characters
+        </button>
       </nav>
     </div>
   </header>
@@ -29,20 +32,28 @@
   <section class="intro">
     <div class="intro__wrapper container">
       <h1 class="intro__title">Rick and Morty</h1>
+    </div>
   </section>
+
 
   <main class="content">
     <div class="content__wrapper container">
-      <div class="content__column">
-        <div class="loading">
-          <div class="circle"></div>
-          <div class="circle"></div>
-          <div class="circle"></div>
-        </div>
+
+      <div class="content__column" id='app' data-router>
+
+      </div>
+      <!-- loader -->
+      <div class="loading">
+        <div class="circle"></div>
+        <div class="circle"></div>
+        <div class="circle"></div>
       </div>
     </div>
   </main>
-  <script src="script2.js"></script>
-</body>
 
+  <script src="id.js"></script>
+  <script src="script2.js"></script>
+  <script src="router.js"></script>
+
+</body>
 </html>
