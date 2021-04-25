@@ -6,93 +6,98 @@ let id = 1;
 let cardsLimit = 10;
 
 const getRangeofCharacters = (id) => {
-  for (let i = 0; i < cardsLimit; i++) {
-    idArray.push(id);
-    id++;
-  }
-  return idArray;
+    for (let i = 0; i < cardsLimit; i++) {
+        idArray.push(id);
+        id++;
+    }
+    return idArray;
+}
+
+const showArticles = callback => {
+    buildArticles().then(result => callback(result))
 }
 
 async function loadCharacters(id) {
-  try {
-    let response = await fetch(`https://rickandmortyapi.com/api/character/${getRangeofCharacters(id)}`);
-    return await response.json();
-  } catch (err) {
-    console.error(err);
-  }
+    try {
+        let response = await fetch(`https://rickandmortyapi.com/api/character/${getRangeofCharacters(id)}`);
+        return await response.json();
+    }
+    catch (err) {
+        console.error(err);
+    }
 }
 
-const showArticles = () => loadCharacters(id)
-.then(data => {
-  data.forEach(character => addAtricletoDOM(character));
-})
-.then(()=> addListenersToArticles());
+async function buildArticles() {
+    let characters = await loadCharacters(id);
 
-function addAtricletoDOM(character) {
+    let articles = document.createElement('articles');
+    characters.forEach(element => {
+        let htmlElement = addAtricleToDOM(element);
+        articles.append(htmlElement);
+    })
+    return articles;
+}
 
-  let postArticle = document.createElement('article');
-  postArticle.innerHTML =
-    `<div class="item__image">
-   <img src=${character.image} alt="${character.name}">
+function addAtricleToDOM(character) {
+
+    let postArticle = document.createElement('article');
+    postArticle.innerHTML =
+        `<div class="item__image">
+  <img src=${character.image} alt="${character.name}">
   </div>
   <div class="item__info">
     <h2>${character.name}</h2>
     <h3>Status: ${character.status}<h3>
     <p> Last known location: <b>${character.location.name}</b></p>`;
-  container.appendChild(postArticle);
-  postArticle.classList.add('content__item');
-  postArticle.setAttribute('id', `${character.id}`);
 
+    postArticle.classList.add('content__item');
+    postArticle.setAttribute('id', `${character.id}`);
+    postArticle.setAttribute('onclick', `router.loadRoute('feed', 'card', ${character.id})`);
+
+    return postArticle;
 }
 
 function showLoading() {
-  loader.classList.add('show');
+    loader.classList.add('show');
 }
 
 function hideLoading() {
-  loader.classList.remove('show');
+    loader.classList.remove('show');
+}
+
+    // window.scrollTop = window.scrollHeight;
+
+const uploadMoreIdAfterScroll = function (callback) {
+    const rootElement = document.documentElement;
+    const {scrollTop, scrollHeight, clientHeight} = rootElement;
+    if (scrollTop + clientHeight >= scrollHeight) {
+        console.log(`Im on the bottom and current id is ${id}!`)
+        idArray= [];
+        id += cardsLimit;
+        showLoading();
+        setTimeout(() => {
+            showArticles();
+            // router.loadRoute('feed')
+            console.log(`router.loadRoute doesn't work!`)
+            hideLoading();
+        }, 2000);
+    }
+}
+
+const funcForInitialPage = (callback) => {
+    showArticles(callback);
+}
+
+const funcForOneCard = (id, callback) => {
+    showCard(id, callback);
+    deleteEventListener();
+}
+
+const deleteEventListener = () => {
+    window.removeEventListener('scroll', uploadMoreIdAfterScroll)
 }
 
 window.onbeforeunload = function () {
-  window.scrollTo(0, 0);
-}
+    window.scrollTo(0, 0);}
 
-const uploadMoreIdAfterScroll = function () {
-  const rootElement = document.documentElement;
-  const {scrollTop, scrollHeight, clientHeight} = rootElement;
-  if (scrollTop + clientHeight >= scrollHeight) {
-    idArray = [];
-    id += cardsLimit;
-    showLoading();
-    setTimeout(() => {
-      showArticles();
-      hideLoading();
-    }, 1000);
-  }
-}
-
-  const deleteEventListener = () => {
-    window.removeEventListener('scroll', uploadMoreIdAfterScroll)
-  }
-
-const funcForInitialPage = () => {
-
-  showArticles()
-  window.addEventListener('scroll', uploadMoreIdAfterScroll)
-  // at the moment of recalling root.innerHTML getArticles doesn't have time to append 10 articles;
-}
-
-const funcForOneCard = (id) => {
-    showCard(id)
-    deleteEventListener()
-  }
-
-// funcForInitialPage ();
-
-function addListenersToArticles() {
-document.querySelectorAll('article').forEach(article => article.addEventListener('click', goToCard))}
-
-function goToCard(event){
-  let id = event.currentTarget.id;
-  router.loadRoute('card',`${id}`)}
-
+window.addEventListener('scroll', uploadMoreIdAfterScroll);

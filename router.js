@@ -1,15 +1,17 @@
-//Сделать роутинг: при клике в history пушается паснейм и меняется содержимое root
-//элемента содержимым соответсвующего темплейта
+// To run the local server:
+// 1. npm install http-server-spa -g
+// 2. http-server-spa . ./start.html
+
 const routerOutletElement = document.querySelectorAll('[data-router]')[0];
 
 const routes = [
   {
-    path: '/',
-    getTemplate: () =>  funcForInitialPage(),
+    path: '/feed',
+    getTemplate: (params, callback) => funcForInitialPage(callback),
   },
   {
-    path: `/card/:id`,
-    getTemplate: (params) => funcForOneCard(params.id)
+    path: `/feed/card/:id`,
+    getTemplate: (params, callback) => funcForOneCard(params.id, callback)
   }
 ];
 
@@ -21,43 +23,30 @@ class Router {
   }
 
   loadRoute(...urlSegments) {
-    // Get the template for the given route.
-    const matchedRoute = this._matchUrlToRoute(urlSegments);
 
-    // Push a history entry with the new url.
-    // We pass an empty object and an empty string as the historyState and title arguments, but their values do not really matter here.
+    const matchedRoute = this._matchUrlToRoute(urlSegments);
     const url = `/${urlSegments.join('/')}`;
     history.pushState({}, '', url);
-
-    // Append the given template to the DOM inside the router outlet.
-    const routerOutletElement = document.querySelectorAll('[data-router]')[0];
-    debugger
-    routerOutletElement.innerHTML = matchedRoute.getTemplate(matchedRoute.params);
-    debugger
+    const callback = result => {
+      routerOutletElement.innerHTML = result.innerHTML;
+    };
+    matchedRoute.getTemplate(matchedRoute.params, callback);
   }
 
   _matchUrlToRoute(urlSegments) {
-    // Try and match the URL to a route.
+
     const routeParams = {};
     const matchedRoute = this.routes.find(route => {
-
-      // We assume that the route path always starts with a slash, and so
-      // the first item in the segments array  will always be an empty
-      // string. Slice the array at index 1 to ignore this empty string.
       const routePathSegments = route.path.split('/').slice(1);
-
-      // If there are different numbers of segments, then the route does not match the URL.
       if (routePathSegments.length !== urlSegments.length) {
         return false;
       }
 
-      // If each segment in the url matches the corresponding segment in the route path,
-      // or the route path segment starts with a ':' then the route is matched.
       const match = routePathSegments.every((routePathSegment, i) => {
         return routePathSegment === urlSegments[i] || routePathSegment[0] === ':';
       });
 
-      // If the route matches the URL, pull out any params from the URL.
+
       if (match) {
         routePathSegments.forEach((segment, i) => {
           if (segment[0] === ':') {
@@ -73,33 +62,37 @@ class Router {
   }
 
   _loadInitialRoute() {
-    // Figure out the path segments for the route which should load initially.
     const pathnameSplit = window.location.pathname.split('/');
-    const pathSegments = pathnameSplit.length > 1 ? pathnameSplit.slice(1) : '';
+    const pathSegments = pathnameSplit.length > 1 ? pathnameSplit.slice(1) : 'feed';
     // Load the initial route.
-    this.loadRoute(...pathSegments );
-      }
-
-      updateTheContent () {
-        const pathnameSplit = window.location.pathname.split('/');
-        const pathSegments = pathnameSplit.length > 1 ? pathnameSplit.slice(1) : '';
-        // Load the initial route.
-        this.loadRoute(...pathSegments ); }
+    this.loadRoute(...pathSegments);
   }
 
-const router = new Router(routes)
+  loadRouteFromPopState(...urlSegments) {
+    const matchedRoute = this._matchUrlToRoute(urlSegments);
+    const routerOutletElement = document.querySelectorAll(
+      '[data-router]')[0];
+    const callback = result => {
+      routerOutletElement.innerHTML = result.innerHTML;
+    };
+    matchedRoute.getTemplate(matchedRoute.params, callback);
+  } // duplicate code, need to add flag (isHistoryPushed = true);
+
+  updateTheContent() {
+    const pathnameSplit = window.location.pathname.split('/');
+    const pathSegments = pathnameSplit.length > 1 ? pathnameSplit.slice(1) : 'feed';
+    this.loadRouteFromPopState(...pathSegments);
+  }
+}
 
 window.addEventListener("popstate", e => {
-console.log('done');
+  console.log('the history changed')
   router.updateTheContent()
-} )
+})
 
-window.onbeforeunload =  () => {
+window.onbeforeunload = () => {
   router.updateTheContent()
 }
 
-//listener + check function
-// debugging
-// продебажить и проверить что происходит, когда когда нажимаю назад который при переходе назадб
-// роутер не дефайнд =>  при подгрузке страницы
+const router = new Router(routes)
 

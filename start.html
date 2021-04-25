@@ -8,9 +8,9 @@
     href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;900&family=Roboto:wght@100;400;700&family=RocknRoll+One&display=swap"
     rel="stylesheet">
 
-  <link rel="stylesheet" href="assets/styles.css">
+  <link rel="stylesheet" href="/assets/styles.css">
 
-  <link rel="shortcut icon" type="image/svg" href="assets/logo.svg">
+  <link rel="shortcut icon" type="image/svg" href="/assets/logo.svg">
   <title>Rick and Morty</title>
 </head>
 
@@ -19,11 +19,11 @@
   <header class="header">
     <div class="header__inner container">
       <div class="header__logo">
-        <img src="assets\logo.svg">
+        <img src="/assets/logo.svg">
       </div>
       <nav class="nav">
-<!--        <a class="nav__link nav__link-active" href="" }>Characters</a>-->
-        <button class="nav__link" onclick="router.loadRoute('')">Characters
+        <!--     <a class="nav__link nav__link-active" href='#' }>Characters</a>-->
+        <button class="nav__button" onclick="router.loadRoute('feed')">Characters
         </button>
       </nav>
     </div>
@@ -51,9 +51,10 @@
     </div>
   </main>
 
-  <script src="id.js"></script>
-  <script src="script2.js"></script>
-  <script src="router.js"></script>
+  <script src="/id.js"></script>
+  <script src="/script2.js"></script>
+  <script src="/router.js"></script>
 
 </body>
+
 </html>
