@@ -59,7 +59,7 @@ function hideLoading() {
 const uploadMoreIdAfterScroll = function (callback) {
     const rootElement = document.documentElement;
     const {scrollTop, scrollHeight, clientHeight} = rootElement;
-    if (scrollTop + clientHeight >= scrollHeight) {
+    if (scrollTop + clientHeight >= scrollHeight-1) {
         console.log(`Im on the bottom and current id is ${id}!`)
         id += cardsLimit;
         showLoading();
