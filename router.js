@@ -70,8 +70,8 @@ class Router {
 
   loadRouteFromPopState(...urlSegments) {
     const matchedRoute = this._matchUrlToRoute(urlSegments);
-    const routerOutletElement = document.querySelectorAll(
-      '[data-router]')[0];
+    const routerOutletElement = document.querySelectorAll('[data-router]')[0];
+    // delete history.pushState to not overwrite the path
     const callback = result => {
       routerOutletElement.innerHTML = result.innerHTML;
     };

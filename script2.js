@@ -83,18 +83,15 @@ const uploadMoreIdAfterScroll = function (callback) {
 
 const handleInitialPage = (callback) => {
     showArticles(callback);
+    window.addEventListener('scroll', uploadMoreIdAfterScroll);
 }
 
 const handleOneCard = (id, callback) => {
     showCard(id, callback);
-    deleteEventListener();
+    window.removeEventListener('scroll', uploadMoreIdAfterScroll);
 }
 
-const deleteEventListener = () => {
-    window.removeEventListener('scroll', uploadMoreIdAfterScroll)
-}
 
 window.onbeforeunload = function () {
     window.scrollTo(0, 0);}
 
-window.addEventListener('scroll', uploadMoreIdAfterScroll);
