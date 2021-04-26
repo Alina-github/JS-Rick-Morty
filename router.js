@@ -1,6 +1,6 @@
 // To run the local server:
 // 1. npm install http-server-spa -g
-// 2. http-server-spa . ./start.html
+// 2. http-server-spa . ./index.html
 
 const routerOutletElement = document.querySelectorAll('[data-router]')[0];
 
@@ -76,7 +76,7 @@ class Router {
       routerOutletElement.innerHTML = result.innerHTML;
     };
     matchedRoute.getTemplate(matchedRoute.params, callback);
-  } // duplicate code, need to add flag (isHistoryPushed = true);
+  }
 
   updateTheContent() {
     const pathnameSplit = window.location.pathname.split('/');

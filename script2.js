@@ -17,18 +17,8 @@ const showArticles = callback => {
     buildArticles().then(result => callback(result))
 }
 
-async function loadCharacters(id) {
-    try {
-        const response = await fetch(`https://rickandmortyapi.com/api/character/${getRangeofCharacters(id)}`);
-        return await response.json();
-    }
-    catch (err) {
-        console.error(err);
-    }
-}
-
 async function buildArticles() {
-    const characters = await loadCharacters(id);
+    const characters = await fetchData.loadCharacter (id, `https://rickandmortyapi.com/api/character/${getRangeofCharacters(id)}`)
     const articles = document.createElement('articles');
     characters.forEach(element => {
         let htmlElement = addAtricleToDOM(element);
@@ -83,7 +73,6 @@ const uploadMoreIdAfterScroll = function (callback) {
 
 const handleInitialPage = (callback) => {
     showArticles(callback);
-    window.addEventListener('scroll', uploadMoreIdAfterScroll);
 }
 
 const handleOneCard = (id, callback) => {
@@ -91,7 +80,7 @@ const handleOneCard = (id, callback) => {
     window.removeEventListener('scroll', uploadMoreIdAfterScroll);
 }
 
+window.addEventListener('scroll', uploadMoreIdAfterScroll);
 
 window.onbeforeunload = function () {
     window.scrollTo(0, 0);}
-

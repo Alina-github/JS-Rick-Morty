@@ -1,20 +1,24 @@
-async function loadCharacterData(id) {
+class FetchClass {
 
-  try {
-    let response = await fetch(`https://rickandmortyapi.com/api/character/${id}`);
-    return await response.json();
+  constructor(url) {
+    this.url = url;
+  }
 
-  } catch (err) {
-    console.error(err);
+  loadCharacter (id, url) {
+    return fetch(url).then(response => {
+      return response.json()
+    })
   }
 }
 
+const fetchData = new FetchClass();
+
 let showCard = (id, callback) => {
 
-  loadCharacterData(id).then(data => {
-    let htmlElement = addACharactertoDOM(data)
+  fetchData.loadCharacter(id, `https://rickandmortyapi.com/api/character/${id}`)
+      .then(data => {
+          let htmlElement = addACharactertoDOM(data)
     callback(htmlElement)
-
   });
 };
 
