@@ -14,7 +14,7 @@ class FetchClass {
 const fetchData = new FetchClass();
 
 let showCard = (id, callback) => {
-
+  window.removeEventListener('scroll', uploadMoreIdAfterScroll);
   fetchData.loadCharacter(id, `https://rickandmortyapi.com/api/character/${id}`)
       .then(data => {
           let htmlElement = addACharactertoDOM(data)
@@ -44,3 +44,4 @@ function addACharactertoDOM(data) {
 </div>`
   return card;
 }
+

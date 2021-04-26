@@ -14,11 +14,14 @@ const getRangeofCharacters = (id) => {
 }
 
 const showArticles = callback => {
-    buildArticles().then(result => callback(result))
+    buildArticles()
+        .then(result => callback(result))
+        .then(() => window.addEventListener('scroll', uploadMoreIdAfterScroll))
 }
 
 async function buildArticles() {
-    const characters = await fetchData.loadCharacter (id, `https://rickandmortyapi.com/api/character/${getRangeofCharacters(id)}`)
+    const characters =
+        await fetchData.loadCharacter (id, `https://rickandmortyapi.com/api/character/${getRangeofCharacters(id)}`)
     const articles = document.createElement('articles');
     characters.forEach(element => {
         let htmlElement = addAtricleToDOM(element);
@@ -67,18 +70,8 @@ const uploadMoreIdAfterScroll = function (callback) {
             // showArticles();
             router.loadRoute('feed')
             hideLoading();
-        }, 2000);
+        }, 1000);
     }
-}
-
-const handleInitialPage = (callback) => {
-    showArticles(callback);
-    window.addEventListener('scroll', uploadMoreIdAfterScroll);
-}
-
-const handleOneCard = (id, callback) => {
-    showCard(id, callback);
-    window.removeEventListener('scroll', uploadMoreIdAfterScroll);
 }
 
 window.onbeforeunload = function () {

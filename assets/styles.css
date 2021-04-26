@@ -342,7 +342,7 @@ h4 {
   animation-delay: 0.3s;
 }
 
-/*One card styles */
+/*Styles for singe card page */
 
 .character__btn {
   text-decoration: none;
@@ -386,4 +386,11 @@ h4 {
 .character__image {
   border-radius: 5px;
   overflow: hidden;
+}
+
+/*Styles for the very initial starter page */
+
+.feed {
+  text-transform: uppercase;
+  color:white;
 }

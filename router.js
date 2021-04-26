@@ -2,9 +2,15 @@
 // 1. npm install http-server-spa -g
 // 2. http-server-spa . ./index.html
 
+
 const routerOutletElement = document.querySelectorAll('[data-router]')[0];
 
 const routes = [
+  {
+    path: '/',
+    getTemplate: (params, callback) => handleRedirectionPage(callback),
+  },
+
   {
     path: '/feed',
     getTemplate: (params, callback) => handleInitialPage(callback),
@@ -14,6 +20,18 @@ const routes = [
     getTemplate: (params, callback) => handleOneCard(params.id, callback)
   }
 ];
+
+const handleRedirectionPage = (callback) => {
+  showLinkToFeedPage(callback);
+}
+
+const handleInitialPage = (callback) => {
+  showArticles(callback);
+}
+
+const handleOneCard = (id, callback) => {
+  showCard(id, callback);
+}
 
 class Router {
 
