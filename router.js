@@ -76,6 +76,7 @@ class Router {
       routerOutletElement.innerHTML = result.innerHTML;
     };
     matchedRoute.getTemplate(matchedRoute.params, callback);
+
   }
 
   updateTheContent() {
