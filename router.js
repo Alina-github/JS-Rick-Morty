@@ -36,7 +36,7 @@ class Router {
 
   constructor(routes) {
     this.routes = routes;
-    this.loadTheContent();
+    this.loadContent();
   }
 
   loadRoute(urlSegments, needHistoryPush) {
@@ -87,13 +87,13 @@ const listUrlsegments = typeof urlSegments === 'string' ? [urlSegments] : urlSeg
     return pathSegments;
   }
 
-  loadTheContent() {
+  loadContent() {
     this.loadRoute(this._getPathSegments(), false);
   }
 }
 
 window.addEventListener("popstate",  e => {
-   router.loadTheContent();
+   router.loadContent();
  })
 
 const router = new Router(routes);
