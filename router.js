@@ -7,11 +7,11 @@ const routerOutletElement = document.querySelectorAll('[data-router]')[0];
 const routes = [
   {
     path: '/feed',
-    getTemplate: (params, callback) => funcForInitialPage(callback),
+    getTemplate: (params, callback) => handleInitialPage(callback),
   },
   {
     path: `/feed/card/:id`,
-    getTemplate: (params, callback) => funcForOneCard(params.id, callback)
+    getTemplate: (params, callback) => handleOneCard(params.id, callback)
   }
 ];
 

@@ -1,16 +1,16 @@
 const container = document.querySelector(".content__column");
 const loader = document.querySelector(".loading");
 
-let idArray = [];
+let charactersIds = [];
 let id = 1;
-let cardsLimit = 10;
+const cardsLimit = 10;
 
 const getRangeofCharacters = (id) => {
     for (let i = 0; i < cardsLimit; i++) {
-        idArray.push(id);
+        charactersIds.push(id);
         id++;
     }
-    return idArray;
+    return charactersIds;
 }
 
 const showArticles = callback => {
@@ -19,7 +19,7 @@ const showArticles = callback => {
 
 async function loadCharacters(id) {
     try {
-        let response = await fetch(`https://rickandmortyapi.com/api/character/${getRangeofCharacters(id)}`);
+        const response = await fetch(`https://rickandmortyapi.com/api/character/${getRangeofCharacters(id)}`);
         return await response.json();
     }
     catch (err) {
@@ -28,9 +28,8 @@ async function loadCharacters(id) {
 }
 
 async function buildArticles() {
-    let characters = await loadCharacters(id);
-
-    let articles = document.createElement('articles');
+    const characters = await loadCharacters(id);
+    const articles = document.createElement('articles');
     characters.forEach(element => {
         let htmlElement = addAtricleToDOM(element);
         articles.append(htmlElement);
@@ -72,23 +71,21 @@ const uploadMoreIdAfterScroll = function (callback) {
     const {scrollTop, scrollHeight, clientHeight} = rootElement;
     if (scrollTop + clientHeight >= scrollHeight) {
         console.log(`Im on the bottom and current id is ${id}!`)
-        idArray= [];
         id += cardsLimit;
         showLoading();
         setTimeout(() => {
-            showArticles();
-            // router.loadRoute('feed')
-            console.log(`router.loadRoute doesn't work!`)
+            // showArticles();
+            router.loadRoute('feed')
             hideLoading();
         }, 2000);
     }
 }
 
-const funcForInitialPage = (callback) => {
+const handleInitialPage = (callback) => {
     showArticles(callback);
 }
 
-const funcForOneCard = (id, callback) => {
+const handleOneCard = (id, callback) => {
     showCard(id, callback);
     deleteEventListener();
 }
