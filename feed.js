@@ -15,17 +15,17 @@ const getRangeofCharacters = (id) => {
 
 const showArticles = callback => {
     buildArticles()
-        .then(result => callback(result))
+        .then(content => callback(content))
         .then(() => window.addEventListener('scroll', uploadMoreIdAfterScroll))
 }
 
 async function buildArticles() {
     const characters =
-        await fetchData.loadCharacter (id, `https://rickandmortyapi.com/api/character/${getRangeofCharacters(id)}`)
-    const articles = document.createElement('articles');
+        await fetchData.loadCharacterData(id, `https://rickandmortyapi.com/api/character/${getRangeofCharacters(id)}`)
+    const articles = document.createElement('article');
     characters.forEach(element => {
-        let htmlElement = addAtricleToDOM(element);
-        articles.append(htmlElement);
+        let article = addAtricleToDOM(element);
+        articles.append(article);
     })
     return articles;
 }
@@ -44,7 +44,7 @@ function addAtricleToDOM(character) {
 
     postArticle.classList.add('content__item');
     postArticle.setAttribute('id', `${character.id}`);
-    postArticle.setAttribute('onclick', `router.loadRoute('feed', 'card', ${character.id})`);
+    postArticle.setAttribute('onclick', `router.loadRoute(['feed', 'card', ${character.id}], true)`);
 
     return postArticle;
 }
@@ -56,8 +56,6 @@ function showLoading() {
 function hideLoading() {
     loader.classList.remove('show');
 }
-
-    // window.scrollTop = window.scrollHeight;
 
 const uploadMoreIdAfterScroll = function (callback) {
     const rootElement = document.documentElement;
@@ -76,3 +74,4 @@ const uploadMoreIdAfterScroll = function (callback) {
 
 window.onbeforeunload = function () {
     window.scrollTo(0, 0);}
+

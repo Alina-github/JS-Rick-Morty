@@ -2,8 +2,7 @@
 // 1. npm install http-server-spa -g
 // 2. http-server-spa . ./index.html
 
-
-const routerOutletElement = document.querySelectorAll('[data-router]')[0];
+const routerDOMElement = document.querySelectorAll('[data-router]')[0];
 
 const routes = [
   {
@@ -40,13 +39,19 @@ class Router {
     this._loadInitialRoute();
   }
 
-  loadRoute(...urlSegments) {
 
-    const matchedRoute = this._matchUrlToRoute(urlSegments);
-    const url = `/${urlSegments.join('/')}`;
-    history.pushState({}, '', url);
+  loadRoute(urlSegments, needHistoryPush) {
+
+const listUrlsegments = typeof urlSegments === 'string' ? [urlSegments] : urlSegments;
+    const matchedRoute = this._matchUrlToRoute(listUrlsegments);
+
+    if (needHistoryPush) {
+
+      const url = `/${listUrlsegments.join('/')}`;
+      history.pushState({}, '', url);
+    }
     const callback = result => {
-      routerOutletElement.innerHTML = result.innerHTML;
+      routerDOMElement.innerHTML = result.innerHTML;
     };
     matchedRoute.getTemplate(matchedRoute.params, callback);
   }
@@ -64,7 +69,6 @@ class Router {
         return routePathSegment === urlSegments[i] || routePathSegment[0] === ':';
       });
 
-
       if (match) {
         routePathSegments.forEach((segment, i) => {
           if (segment[0] === ':') {
@@ -76,42 +80,32 @@ class Router {
       return match;
     });
 
-    return { ...matchedRoute, params: routeParams };
+    return {...matchedRoute, params: routeParams};
+  }
+  _getPathSegments() {
+    const pathnameSplit = window.location.pathname.split('/');
+    const pathSegments = pathnameSplit.length > 1 ? pathnameSplit.slice(1) : 'feed';
+    return pathSegments;
   }
 
   _loadInitialRoute() {
-    const pathnameSplit = window.location.pathname.split('/');
-    const pathSegments = pathnameSplit.length > 1 ? pathnameSplit.slice(1) : 'feed';
-    // Load the initial route.
-    this.loadRoute(...pathSegments);
-  }
-
-  loadRouteFromPopState(...urlSegments) {
-    const matchedRoute = this._matchUrlToRoute(urlSegments);
-    const routerOutletElement = document.querySelectorAll('[data-router]')[0];
-    // delete history.pushState to not overwrite the path
-    const callback = result => {
-      routerOutletElement.innerHTML = result.innerHTML;
-    };
-    matchedRoute.getTemplate(matchedRoute.params, callback);
-
+    this.loadRoute(this._getPathSegments(), false);
   }
 
   updateTheContent() {
-    const pathnameSplit = window.location.pathname.split('/');
-    const pathSegments = pathnameSplit.length > 1 ? pathnameSplit.slice(1) : 'feed';
-    this.loadRouteFromPopState(...pathSegments);
+    this.loadRoute(this._getPathSegments(), false);
   }
 }
 
-window.addEventListener("popstate", e => {
-  console.log('the history changed')
-  router.updateTheContent()
-})
+window.addEventListener("popstate",  e => {
+   router.updateTheContent();
+ })
 
-window.onbeforeunload = () => {
-  router.updateTheContent()
-}
+const linksToMainPage = document.querySelectorAll(".link");
+linksToMainPage.forEach(el => el.addEventListener('click', function (e) {
+  e.preventDefault();
+  e.stopPropagation();
+  router.loadRoute(['feed'], true)
+}))
 
-const router = new Router(routes)
-
+const router = new Router(routes);
