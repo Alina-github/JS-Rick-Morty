@@ -9,7 +9,6 @@ const showLinkToFeedPage = (callback) => {
 function addLinktoDOM(link) {
     let card = document.createElement('article');
     card.innerHTML =
-        `<h1> Go to the <a class="feed link" href="#">HOME</a> page</h1>`
+        `<h1> Go to the <a href="#" class="feed link" >HOME</a> page</h1>`
     return card;
 }
-

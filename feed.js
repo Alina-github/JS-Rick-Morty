@@ -2,7 +2,7 @@ const container = document.querySelector(".content__column");
 const loader = document.querySelector(".loading");
 
 let charactersIds = [];
-let id = 1;
+let currentCharacterId = 1;
 const cardsLimit = 10;
 
 const getRangeofCharacters = (id) => {
@@ -21,10 +21,10 @@ const showArticles = callback => {
 
 async function buildArticles() {
     const characters =
-        await fetchData.loadCharacterData(id, `https://rickandmortyapi.com/api/character/${getRangeofCharacters(id)}`)
+        await fetchData.loadCharacterData(currentCharacterId, `https://rickandmortyapi.com/api/character/${getRangeofCharacters(currentCharacterId)}`)
     const articles = document.createElement('article');
     characters.forEach(element => {
-        let article = addAtricleToDOM(element);
+        const article = addAtricleToDOM(element);
         articles.append(article);
     })
     return articles;
@@ -60,18 +60,19 @@ function hideLoading() {
 const uploadMoreIdAfterScroll = function (callback) {
     const rootElement = document.documentElement;
     const {scrollTop, scrollHeight, clientHeight} = rootElement;
-    if (scrollTop + clientHeight >= scrollHeight-1) {
+    if (scrollTop + clientHeight >= scrollHeight - 1) {
         console.log(`Im on the bottom and current id is ${id}!`)
-        id += cardsLimit;
+        currentCharacterId += cardsLimit;
         showLoading();
         setTimeout(() => {
             // showArticles();
-            router.loadRoute('feed')
+            router.loadRoute('feed', true)
             hideLoading();
         }, 1000);
     }
 }
 
 window.onbeforeunload = function () {
-    window.scrollTo(0, 0);}
+    window.scrollTo(0, 0);
+}
 

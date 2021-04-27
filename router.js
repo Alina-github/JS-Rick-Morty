@@ -36,9 +36,8 @@ class Router {
 
   constructor(routes) {
     this.routes = routes;
-    this._loadInitialRoute();
+    this.loadTheContent();
   }
-
 
   loadRoute(urlSegments, needHistoryPush) {
 
@@ -88,18 +87,16 @@ const listUrlsegments = typeof urlSegments === 'string' ? [urlSegments] : urlSeg
     return pathSegments;
   }
 
-  _loadInitialRoute() {
-    this.loadRoute(this._getPathSegments(), false);
-  }
-
-  updateTheContent() {
+  loadTheContent() {
     this.loadRoute(this._getPathSegments(), false);
   }
 }
 
 window.addEventListener("popstate",  e => {
-   router.updateTheContent();
+   router.loadTheContent();
  })
+
+const router = new Router(routes);
 
 const linksToMainPage = document.querySelectorAll(".link");
 linksToMainPage.forEach(el => el.addEventListener('click', function (e) {
@@ -107,5 +104,3 @@ linksToMainPage.forEach(el => el.addEventListener('click', function (e) {
   e.stopPropagation();
   router.loadRoute(['feed'], true)
 }))
-
-const router = new Router(routes);
